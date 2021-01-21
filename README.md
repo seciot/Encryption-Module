@@ -24,9 +24,7 @@ All case files are located in EasyEDA project page (section attachments). GitHub
 Yes, feel free to use this as commercial product, but remember that you hold responsibility for any data breaches. If you wish you could also support me with small donation.
 
 ## How to modify the Encryption Chunk Size to eg. 64 bytes?
-Change ```cs 
-const uint16_t STREAM_CHUNK_SIZE = 0x1;
-``` inside `vmpc_proc.c` file to desired size eg. 0x40.
+Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `vmpc_proc.c` file to desired size eg. 0x40.
 
 ## How to communicate with module?
 You can use eg. C# to send and data (example API <here>), via any Serial library that can communicate with serial ports or for example via RealTerm. As device uses USB CDC it uses default Windows/Linux driver to handle it as Serial Port.
