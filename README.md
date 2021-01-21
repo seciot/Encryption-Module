@@ -25,6 +25,7 @@ Yes, feel free to use this as commercial product, but remember that you hold res
 
 ## How to modify the Encryption Chunk Size to eg. 64 bytes?
 Change ```cs
+
 const uint16_t STREAM_CHUNK_SIZE = 0x1;
 ``` inside `vmpc_proc.c` file to desired size eg. 0x40.
 
