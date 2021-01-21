@@ -14,8 +14,11 @@ It can encrypt up to 200kB/s (limit of USB CDC on FS) or even up to 40MB/s when 
 So it's... fast (in some cases)
 
 ## Can you share the PCB layout files?
-YES, I'll upload them as soon as I will test the next revision of the PCB.
+YES: https://oshwlab.com/business/stm32er3_copy
+Everything was designed in EasyEDA, so there you will always have latest files.
+
+## Where are .STL files for case?
+All case files are located in EasyEDA project page (section attachments). GitHub is only for firmware & support / issues.
 
 ## How about selling this product? Can I do it?
 Yes, feel free to use this as commercial product, but remember that you hold responsibility for any data breaches. If you wish you could also support me with small donation.
-
