@@ -208,6 +208,7 @@ void OnPacketReceived(uint8_t recv) {
     		sw(isSupported(byte));
     	}
     	Send();
+    	currentCommand = 0x0;
     }
 
 }
