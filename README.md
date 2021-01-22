@@ -3,7 +3,7 @@ Encryption Module is an USB peripheral for PC that allows you to encrypt data an
 It can encrypt with chunk mode - where it serializes specified amount of data or a stream mode where it serializes until its disconnected and rebooted.
 
 ## What algorithm is used inside EMO?
-It uses VMPC which was featured at FEC 2005. It is quite secure algorithm according that you use quite good password (or password file). 
+It uses VMPC which was featured at FSE 2004. It is quite secure algorithm according that you use quite good password (or password file). 
 
 ## What values does it support?
 Password Length: 0-255 bytes
