@@ -24,14 +24,14 @@ All case files are located in EasyEDA project page (section attachments). GitHub
 Yes, feel free to use this as commercial product, but remember that you hold responsibility for any data breaches. If you wish you could also support me with small donation.
 
 ## How to modify the Encryption Chunk Size to eg. 64 bytes?
-Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `vmpc_proc.c` file to desired size eg. 0x40.
+Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `config.h` file to desired size eg. 0x40.
 
 ## How to communicate with module?
 You can use eg. C# to send and data (example API [here](https://github.com/H1M4W4R1/Encryption-Module-API)), via any Serial library that can communicate with serial ports or for example via RealTerm. As device uses USB CDC it uses default Windows/Linux driver to handle it as Serial Port.
   
 ## Do I need to do anything before flashing it into EMO board?
 Yes, you should change the IV for VMPC (unless you're testing device, then it's recommended to run with default one which is used in all demonstration videos).
-The IV is located inside `vmpc.c` file.
+The IV is located inside `config.h` file.
 ```c
 // VMPC Initialization Vector, can be changed
 unsigned char InitVector[64] = {
@@ -41,5 +41,5 @@ unsigned char InitVector[64] = {
 0xe2, 0x12, 0xb5, 0x0a, 0xef, 0x68, 0x0d, 0xa9, 0x3a, 0xf7, 0xb9, 0x2a, 0xa0, 0x81, 0x77, 0xd8}; // Hardcoded
 ```
 This vector should consist of 64 bytes (512 bits). No more, no less. Otherwise it may cause firmware to crash.
-I recommend to generate random 64 bytes and then enter them into `vmpc.c` file replacing default vector.
+I recommend to generate random 64 bytes and then enter them into `config.h` file replacing default vector.
 
