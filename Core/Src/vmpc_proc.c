@@ -5,6 +5,7 @@
  *      Author: Patryk Pastuszka
  */
 #include "main.h"
+#include "config.h"
 #include "usbd_cdc_if.h"
 #include "vmpc.h"
 #include "usbd_cdc.h"
@@ -57,9 +58,7 @@ const uint8_t CMD_DMP_DAT = 0x50;
 // Command Load Data
 const uint8_t CMD_LOA_DAT = 0x51;
 
-// Size of stream chunk. Will return data after this value is reached. Equal to amount of bytes returned.
-// MAX (recommended): 32767.
-const uint16_t STREAM_CHUNK_SIZE = 0x1;
+const uint8_t CMD_ISF_SUP = 0xF0;
 
 uint8_t buffer[16384];
 
@@ -81,12 +80,36 @@ void Send(){
 	}
 }
 
+// Grabs supported byte
+uint8_t isSupported(uint8_t offset){
+	if(offset == 0)
+	{
+		return 0b10001111;
+	}
+	else if(offset <= 9)
+	{
+		return 0x0;
+	}
+	else if(offset == 10){
+		return 0b11000000;
+	}
+	else if(offset < 30){
+		return 0x0;
+	}
+	else if(offset == 30){
+		return 0b10000000;
+	}
+	else{
+		return 0x0;
+	}
+}
+
 void OnPacketReceived(uint8_t recv) {
 
 	// If command is nothing check if it's new command
     if (currentCommand == CMD_DOE_NOT) {
         if (recv == CMD_DOE_NOT || recv == CMD_SET_PWD || recv == CMD_INI_ALG || recv == CMD_ENC_SEQ
-        		|| recv == CMD_LOA_DAT || recv == CMD_DMP_DAT || recv == CMD_ENC_STR) {
+        		|| recv == CMD_LOA_DAT || recv == CMD_DMP_DAT || recv == CMD_ENC_STR || recv == CMD_ISF_SUP) {
             currentCommand = recv;
         }
 
@@ -178,6 +201,13 @@ void OnPacketReceived(uint8_t recv) {
             loadIterator = 0;
             currentCommand = 0x0;
         }
+    }
+    // Dump features
+    else if (currentCommand == CMD_ISF_SUP) {
+    	for(uint8_t byte = 0; byte < 32; byte++){
+    		sw(isSupported(byte));
+    	}
+    	Send();
     }
 
 }
