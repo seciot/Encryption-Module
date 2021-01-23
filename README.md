@@ -6,7 +6,7 @@ It can encrypt with chunk mode - where it serializes specified amount of data or
 It uses VMPC which was featured at FSE 2004. It is quite secure algorithm according that you use quite good password (or password file). 
 
 ## What values does it support?
-Password Length: 0-255 bytes
+Password Length: 0-255 bytes  
 Chunk Size: 0-16384 bytes
 
 ## How fast is it?
