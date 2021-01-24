@@ -24,22 +24,23 @@ All case files are located in EasyEDA project page (section attachments). GitHub
 Yes, feel free to use this as commercial product, but remember that you hold responsibility for any data breaches. If you wish you could also support me with small donation.
 
 ## How to modify the Encryption Chunk Size to eg. 64 bytes?
-Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `config.h` file to desired size eg. 0x40.
+Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `config.c` file to desired size eg. 0x40.
 
 ## How to communicate with module?
 You can use eg. C# to send and data (example API [here](https://github.com/H1M4W4R1/Encryption-Module-API)), via any Serial library that can communicate with serial ports or for example via RealTerm. As device uses USB CDC it uses default Windows/Linux driver to handle it as Serial Port.
   
 ## Do I need to do anything before flashing it into EMO board?
 Yes, you should change the IV for VMPC (unless you're testing device, then it's recommended to run with default one which is used in all demonstration videos).
-The IV is located inside `config.h` file.
+The IV is located inside `config.c` file.
 ```c
 // VMPC Initialization Vector, can be changed
-unsigned char InitVector[64] = {
+unsigned char InitVector[IV_LENGTH] = {
 0xf5, 0xb8, 0xe0, 0x36, 0x42, 0x20, 0x1a, 0xc9, 0x2d, 0x8d, 0xee, 0xd0, 0x4c, 0x5c, 0xfe, 0xb1,
 0x19, 0xee, 0x2e, 0x01, 0xd3, 0x31, 0xcd, 0x7e, 0x14, 0xdb, 0x37, 0x71, 0xe9, 0xf2, 0x58, 0x94,
 0xc5, 0x9e, 0xac, 0xed, 0x6e, 0xf9, 0x1b, 0x3d, 0x28, 0x8f, 0x31, 0x0c, 0xd2, 0x6a, 0x85, 0xaf,
 0xe2, 0x12, 0xb5, 0x0a, 0xef, 0x68, 0x0d, 0xa9, 0x3a, 0xf7, 0xb9, 0x2a, 0xa0, 0x81, 0x77, 0xd8}; // Hardcoded
 ```
-This vector should consist of 64 bytes (512 bits). No more, no less. Otherwise it may cause firmware to crash.
-I recommend to generate random 64 bytes and then enter them into `config.h` file replacing default vector.
+This vector should consist of 64 bytes (512 bits). ~~No more, no less. Otherwise it may cause firmware to crash.
+I recommend to generate random 64 bytes and then enter them into `config.c` file replacing default vector.~~
+With the new version of firmware updated with [this commit](https://github.com/H1M4W4R1/Encryption-Module/commit/a092f10310f43995a66dde27f71c7aa170ac6456) the IV length can be changed within `config.h` and `config.c` files. Remember to match the length of array to IV_LENGTH, otherwise there may be a bunch of errors.
 
