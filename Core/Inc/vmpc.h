@@ -8,12 +8,9 @@
 #ifndef INC_VMPC_H_
 #define INC_VMPC_H_
 
-extern uint8_t Key[256];
-extern uint8_t Vec[64];
 extern uint8_t P[256];
 extern uint8_t s;
 extern uint8_t n;
-extern uint8_t InitVector[64];
 
 void ResetP();
 void ResetVMPC();

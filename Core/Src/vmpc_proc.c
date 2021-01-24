@@ -137,7 +137,7 @@ void OnPacketReceived(uint8_t recv) {
     else if (currentCommand == CMD_INI_ALG)
     {
         ResetVMPC();
-        VMPCInitKey(Password, InitVector, PasswordLength, 64);
+        VMPCInitKey(Password, InitVector, PasswordLength, IV_LENGTH);
         currentCommand = 0x0;
     }
     else if (currentCommand == CMD_ENC_STR)

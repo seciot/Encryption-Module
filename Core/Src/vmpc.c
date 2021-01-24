@@ -1,7 +1,6 @@
 #include "main.h"
 
 // VMPC variables
-uint8_t Key[256], Vec[64];
 uint8_t P[256];
 uint8_t s, n;
 
