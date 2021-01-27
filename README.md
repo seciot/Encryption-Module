@@ -24,7 +24,7 @@ All case files are located in EasyEDA project page (section attachments). GitHub
 Yes, feel free to use this as commercial product, but remember that you hold responsibility for any data breaches. If you wish you could also support me with small donation.
 
 ## How to modify the Encryption Chunk Size to eg. 64 bytes?
-~~Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `config.c` file to desired size eg. 0x40.~~
+~~Change ```const uint16_t STREAM_CHUNK_SIZE = 0x1;``` inside `config.c` file to desired size eg. 0x40.~~  
 New option: before you begin stream encryption you can send 0xF2 0x0 <16-bit number, MSB first> to set STREAM_CHUNK_SIZE variable. Beware: it needs to be done each single time you want to have it changed from default. Otherwise go with `config.c` change and reflash firmware on your EMO.
 
 ## How to communicate with module?
