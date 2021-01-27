@@ -58,9 +58,19 @@ const uint8_t CMD_DMP_DAT = 0x50;
 // Command Load Data
 const uint8_t CMD_LOA_DAT = 0x51;
 
+// Command check supported features
 const uint8_t CMD_ISF_SUP = 0xF0;
 
-uint8_t buffer[16384];
+// Command configuration get value
+const uint8_t CMD_CFG_GET = 0xF1;
+
+// Command configuration set value
+const uint8_t CMD_CFG_SET = 0xF2;
+
+int8_t cfgIndex = -1;
+uint16_t cfgIterator = 0;
+
+uint8_t buffer[64];
 
 // Current length of data in buffer
 uint16_t len = 0;
@@ -97,7 +107,7 @@ uint8_t isSupported(uint8_t offset){
 		return 0x0;
 	}
 	else if(offset == 30){
-		return 0b10000000;
+		return 0b11100000;
 	}
 	else{
 		return 0x0;
@@ -109,7 +119,8 @@ void OnPacketReceived(uint8_t recv) {
 	// If command is nothing check if it's new command
     if (currentCommand == CMD_DOE_NOT) {
         if (recv == CMD_DOE_NOT || recv == CMD_SET_PWD || recv == CMD_INI_ALG || recv == CMD_ENC_SEQ
-        		|| recv == CMD_LOA_DAT || recv == CMD_DMP_DAT || recv == CMD_ENC_STR || recv == CMD_ISF_SUP) {
+        		|| recv == CMD_LOA_DAT || recv == CMD_DMP_DAT || recv == CMD_ENC_STR || recv == CMD_ISF_SUP
+				|| recv == CMD_CFG_GET || recv == CMD_CFG_SET) {
             currentCommand = recv;
         }
 
@@ -209,6 +220,44 @@ void OnPacketReceived(uint8_t recv) {
     	}
     	Send();
     	currentCommand = 0x0;
+    }
+    else if(currentCommand == CMD_CFG_GET){
+    	if(cfgIndex < 0)
+    		cfgIndex = recv;
+    	else
+    	{
+    		// Index [0] - STREAM_CHUNK_SIZE
+    		if(cfgIndex == 0)
+    		{
+    			sw((uint8_t)(STREAM_CHUNK_SIZE >> 8));
+    			sw((uint8_t)(STREAM_CHUNK_SIZE & 255));
+    			Send();
+    			currentCommand = 0x0;
+    			cfgIndex = -1;
+    		}
+    	}
+
+    }
+    else if(currentCommand == CMD_CFG_SET){
+    	if(cfgIndex < 0)
+    	    cfgIndex = recv;
+    	else
+    	{
+    		if(cfgIndex == CFG_STREAM_CHUNK_SIZE){
+    			if(cfgIterator == 0)
+    			{
+    				STREAM_CHUNK_SIZE = recv;
+    				STREAM_CHUNK_SIZE *= 256;
+    				cfgIterator++;
+    			}
+    			else{
+    				STREAM_CHUNK_SIZE += recv;
+    				currentCommand = 0x0;
+    				cfgIndex = -1;
+    				cfgIterator = 0;
+    			}
+    		}
+    	}
     }
 
 }
