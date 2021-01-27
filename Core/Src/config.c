@@ -11,5 +11,5 @@ unsigned char InitVector[IV_LENGTH] = {
 // Stream Chunk Size
 uint16_t STREAM_CHUNK_SIZE = 0x1;
 
-
-uint8_t CFG_STREAM_CHUNK_SIZE = 0x0;
+// Fast USB - does not wait for buffer processing, may cause serialization errors.
+uint8_t ENABLE_FAST_USB = 0x0;

@@ -15,6 +15,6 @@
 extern unsigned char InitVector[IV_LENGTH];
 
 extern uint16_t STREAM_CHUNK_SIZE;
-extern uint8_t CFG_STREAM_CHUNK_SIZE;
+extern uint8_t ENABLE_FAST_USB; // Fast USB mode - no error checking, may cause severe serialization errors, not recommended
 
 #endif /* INC_CONFIG_H_ */

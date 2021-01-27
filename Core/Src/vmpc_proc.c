@@ -9,6 +9,7 @@
 #include "usbd_cdc_if.h"
 #include "vmpc.h"
 #include "usbd_cdc.h"
+#include "config_ids.h"
 
 // Iterator for running around password
 uint8_t iterator = 0;
@@ -114,6 +115,31 @@ uint8_t isSupported(uint8_t offset){
 	}
 }
 
+// CFG_GetStreamChunkSize
+void GetStreamChunkSize(uint8_t recv){
+	sw((uint8_t)(STREAM_CHUNK_SIZE >> 8));
+	sw((uint8_t)(STREAM_CHUNK_SIZE & 255));
+	Send();
+	currentCommand = 0x0;
+	cfgIndex = -1;
+}
+
+// CFG_SetStreamChunkSize
+void SetStreamChunkSize(uint8_t recv){
+	if(cfgIterator == 0)
+	{
+		STREAM_CHUNK_SIZE = recv;
+	    STREAM_CHUNK_SIZE *= 256;
+	    cfgIterator++;
+	}
+	else{
+		STREAM_CHUNK_SIZE += recv;
+		currentCommand = 0x0;
+		cfgIndex = -1;
+		cfgIterator = 0;
+	}
+}
+
 void OnPacketReceived(uint8_t recv) {
 
 	// If command is nothing check if it's new command
@@ -137,7 +163,6 @@ void OnPacketReceived(uint8_t recv) {
         else {
             Password[iterator] = recv;
             iterator++;
-
             if (iterator >= PasswordLength) {
                 currentCommand = 0x0;
                 isLengthSet = 0;
@@ -190,7 +215,8 @@ void OnPacketReceived(uint8_t recv) {
                 isChunkLenSet = 0;
             }
         }
-    } else if (currentCommand == CMD_DMP_DAT) {
+    }
+    else if (currentCommand == CMD_DMP_DAT) {
     	// Dump encryption data, P, s, n
         for (uint16_t q = 0; q < 256; q++)
             sw(P[q]);
@@ -227,13 +253,16 @@ void OnPacketReceived(uint8_t recv) {
     	else
     	{
     		// Index [0] - STREAM_CHUNK_SIZE
-    		if(cfgIndex == 0)
+    		if(cfgIndex == CFG_STREAM_CHUNK_SIZE)
     		{
-    			sw((uint8_t)(STREAM_CHUNK_SIZE >> 8));
-    			sw((uint8_t)(STREAM_CHUNK_SIZE & 255));
+    			GetStreamChunkSize(recv);
+    		}
+    		else if(cfgIndex == CFG_ENABLE_FAST_USB)
+    		{
+    			sw(ENABLE_FAST_USB);
     			Send();
-    			currentCommand = 0x0;
     			cfgIndex = -1;
+    			currentCommand = 0x0;
     		}
     	}
 
@@ -244,20 +273,15 @@ void OnPacketReceived(uint8_t recv) {
     	else
     	{
     		if(cfgIndex == CFG_STREAM_CHUNK_SIZE){
-    			if(cfgIterator == 0)
-    			{
-    				STREAM_CHUNK_SIZE = recv;
-    				STREAM_CHUNK_SIZE *= 256;
-    				cfgIterator++;
-    			}
-    			else{
-    				STREAM_CHUNK_SIZE += recv;
-    				currentCommand = 0x0;
-    				cfgIndex = -1;
-    				cfgIterator = 0;
-    			}
+    			SetStreamChunkSize(recv);
+    		}
+    		else if(cfgIndex == CFG_ENABLE_FAST_USB){
+    			ENABLE_FAST_USB = recv;
+    			cfgIndex = -1;
+    			currentCommand = 0x0;
     		}
     	}
     }
 
 }
+
