@@ -71,7 +71,7 @@ const uint8_t CMD_CFG_SET = 0xF2;
 int8_t cfgIndex = -1;
 uint16_t cfgIterator = 0;
 
-uint8_t buffer[64];
+uint8_t buffer[16384];
 
 // Current length of data in buffer
 uint16_t len = 0;
