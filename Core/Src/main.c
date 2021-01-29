@@ -21,6 +21,9 @@
 #include <processing.h>
 #include "main.h"
 #include "usb_device.h"
+#include "peripheral/usb.h"
+#include "data/usb_data.h"
+#include "processing.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -29,6 +32,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
 
 /* USER CODE END PTD */
 
@@ -102,6 +106,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(has_data()){
+		  uint32_t size = get_data_size();
+		  uint8_t* buffer = get_data_buffer();
+
+		  for(uint32_t i = 0; i < size; i++)
+		  {
+			ProcessByte(buffer[i]);
+		  }
+		  increase_counter();
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

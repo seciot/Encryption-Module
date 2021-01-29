@@ -9,7 +9,7 @@
 #ifndef INC_PROCESSING_H_
 #define INC_PROCESSING_H_
 
-void OnPacketReceived(uint8_t recv);
+void ProcessByte(uint8_t recv);
 void Send();
 
 

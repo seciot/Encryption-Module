@@ -20,7 +20,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include <processing.h>
+#include "peripheral/usb.h"
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
@@ -275,23 +275,33 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
-  /* USER CODE BEGIN 6 */
-  //USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-	uint8_t EFU = ENABLE_FAST_USB;
+	/* USER CODE BEGIN 6 */
+	// Allocate new buffer - if failed, return as busy
+	uint8_t* newBuffer = malloc(sizeof(uint8_t) * APP_RX_DATA_SIZE);
 
- // TODO: note - this makes buffer to be reused, am
-  if(EFU > 0)
-	  	 USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+	if(!newBuffer)
+	{
+		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+		return USBD_BUSY;
+	}
 
-  for(int32_t q = 0; q < *Len; q++){
-	  OnPacketReceived(Buf[q]); // TODO: move outta here
-  }
-  if(EFU < 1)
-  		 USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+	uint8_t result = write_usb_data(Buf, *Len);
 
+	if(!result)
+	{
+		free(newBuffer);
 
-  return (USBD_OK);
-  /* USER CODE END 6 */
+		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+		return USBD_BUSY;
+	}
+	else
+	{
+		USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &newBuffer[0]);
+		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+		return USBD_OK;
+	}
+
+	/* USER CODE END 6 */
 }
 
 /**
