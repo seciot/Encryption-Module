@@ -7,7 +7,7 @@ It uses VMPC which was featured at FSE 2004. It is quite secure algorithm accord
 
 ## What values does it support?
 Password Length: 0-255 bytes  
-Chunk Size: 0-16384 bytes
+Chunk Size: 0-8192 bytes
 
 ## How fast is it?
 It can encrypt up to 200kB/s (limit of USB CDC on FS) or even up to 40MB/s when it is used only to generate VMPC cipher data and encryption proceeds on PC's processor. (Tested on Ryzen 9 3900X)
