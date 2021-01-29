@@ -4,6 +4,7 @@
  *  Created on: Jan 29, 2021
  *      Author: nov11
  */
+#include "feature/cmd_0x04.h"
 #include "feature/common.h"
 #include "main.h"
 

@@ -12,8 +12,6 @@
 #include "feature/common.h"
 #include "peripheral/usb.h"
 
-
-
 int8_t cfgIndex = -1;
 
 // CFG_GetStreamChunkSize

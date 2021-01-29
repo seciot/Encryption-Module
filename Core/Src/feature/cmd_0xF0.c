@@ -4,7 +4,7 @@
  *  Created on: Jan 29, 2021
  *      Author: nov11
  */
-
+#include "feature/cmd_0xF0.h"
 #include "main.h"
 #include "peripheral/usb.h"
 #include "feature/common.h"

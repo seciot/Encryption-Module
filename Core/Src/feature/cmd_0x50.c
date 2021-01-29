@@ -4,6 +4,7 @@
  *  Created on: Jan 29, 2021
  *      Author: nov11
  */
+#include "feature/cmd_0x50.h"
 #include "main.h"
 #include "crypto/vmpc.h"
 #include "feature/common.h"
