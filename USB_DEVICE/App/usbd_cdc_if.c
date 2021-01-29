@@ -111,7 +111,6 @@ uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
@@ -276,28 +275,17 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
 	/* USER CODE BEGIN 6 */
-	// Allocate new buffer - if failed, return as busy
-	uint8_t* newBuffer = malloc(sizeof(uint8_t) * APP_RX_DATA_SIZE);
-
-	if(!newBuffer)
-	{
-		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-		return USBD_BUSY;
-	}
-
+	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &(get_new_buffer()[0]));
+	USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 	uint8_t result = write_usb_data(Buf, *Len);
+
 
 	if(!result)
 	{
-		free(newBuffer);
-
-		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 		return USBD_BUSY;
 	}
 	else
 	{
-		USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &newBuffer[0]);
-		USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 		return USBD_OK;
 	}
 

@@ -9,24 +9,28 @@
 #include "usbd_cdc_if.h"
 #include "data/usb_data.h"
 
-#define USB_QUEUE_SIZE 32
+#define USB_QUEUE_SIZE 128
 
 // USB Data Queue
 struct UsbDataObj queue[USB_QUEUE_SIZE];
 uint8_t usbQueueIterator = 0;
 uint8_t last_data = USB_QUEUE_SIZE - 1;
 
-
 // USB TX Buffer
-uint8_t buffer[16384];
+uint8_t buffer[64];
 
 // Current length of data in buffer
 uint16_t len = 0;
 
-// Writes data to USB buffer
-void usb_write(uint8_t b){
-	*(buffer + len) = b;
-	len++;
+void usb_cdc_system_init()
+{
+	for(uint8_t i = 0; i < USB_QUEUE_SIZE; i++){
+		uint8_t* buffer = malloc(sizeof(uint8_t) * APP_RX_DATA_SIZE);
+		struct UsbDataObj data;
+		data.buffer = buffer;
+		data.length = len;
+		queue[i] = data;
+	}
 }
 
 // Sends USB buffer onto CDC port
@@ -37,19 +41,21 @@ void usb_tx(){
 	}
 }
 
-struct UsbDataObj usb_create_struct(uint8_t* buffer, uint32_t len)
-{
-	struct UsbDataObj data;
-	data.buffer = buffer;
-	data.length = len;
-	return data;
+
+// Writes data to USB buffer
+void usb_write(uint8_t b){
+	*(buffer + len) = b;
+	len++;
+	if(len == 64)
+		usb_tx();
 }
+
+
 
 uint8_t has_data()
 {
 	return usbQueueIterator != last_data;
 }
-
 
 void increase_counter()
 {
@@ -57,7 +63,7 @@ void increase_counter()
 	last_data++;
 
 	// If over iteration, then return to beginning of array
-	if(last_data > USB_QUEUE_SIZE - 1)
+	if(last_data >= USB_QUEUE_SIZE)
 		last_data = 0;
 }
 
@@ -90,6 +96,11 @@ uint8_t has_space()
 	return get_space() > 0;
 }
 
+uint8_t* get_new_buffer()
+{
+	return queue[(usbQueueIterator + 1) % USB_QUEUE_SIZE].buffer;
+}
+
 uint8_t write_usb_data(uint8_t* buffer, uint32_t len)
 {
 
@@ -97,10 +108,12 @@ uint8_t write_usb_data(uint8_t* buffer, uint32_t len)
 	if(get_space() <= 0)
 		return 0;
 
-	queue[usbQueueIterator++] = usb_create_struct(buffer, len);
-
-	// Free old buffer memory - do it after it is processed
-	//free(buffer);
+	struct UsbDataObj* obj = &queue[usbQueueIterator];
+	obj->buffer = buffer;
+	obj->length = len;
+	usbQueueIterator++;
+	if(usbQueueIterator >= USB_QUEUE_SIZE)
+		usbQueueIterator = 0;
 
 	return 1;
 }

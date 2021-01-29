@@ -13,11 +13,12 @@
 void usb_write(uint8_t b);
 void usb_tx();
 
-// Create structure from USB buffer
-struct UsbDataObj usb_create_struct(uint8_t* buffer, uint16_t len);
+extern uint8_t* newBuffer;
 
 // Check if has data to process
 uint8_t has_data();
+uint8_t* get_new_buffer();
+void usb_cdc_system_init();
 
 // Get data to process
 void increase_counter();

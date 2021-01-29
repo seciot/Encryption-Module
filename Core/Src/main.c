@@ -99,6 +99,7 @@ int main(void)
   HAL_GPIO_WritePin(SPI1_WP_GPIO_Port, SPI1_WP_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(SPI1_RST_GPIO_Port, SPI1_RST_Pin, GPIO_PIN_SET);
   W25qxx_Init();
+  usb_cdc_system_init();
 
   /* USER CODE END 2 */
 
