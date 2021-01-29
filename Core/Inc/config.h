@@ -4,6 +4,7 @@
  *  Created on: 22 Jan 2021
  *      Author: h1m4w4r1
  */
+#include "main.h"
 
 #ifndef INC_CONFIG_H_
 #define INC_CONFIG_H_

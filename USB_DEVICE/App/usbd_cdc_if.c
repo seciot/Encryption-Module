@@ -20,10 +20,10 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <processing.h>
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-#include "vmpc_proc.h"
 #include "config.h"
 /* USER CODE END INCLUDE */
 
@@ -277,15 +277,16 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
   //USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+	uint8_t EFU = ENABLE_FAST_USB;
 
  // TODO: note - this makes buffer to be reused, am
-  if(ENABLE_FAST_USB > 0)
+  if(EFU > 0)
 	  	 USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
   for(int32_t q = 0; q < *Len; q++){
 	  OnPacketReceived(Buf[q]); // TODO: move outta here
   }
-  if(ENABLE_FAST_USB < 1)
+  if(EFU < 1)
   		 USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
 

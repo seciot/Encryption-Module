@@ -4,12 +4,13 @@
  *  Created on: Jan 4, 2021
  *      Author: Patryk Pastuszka
  */
+#include "main.h"
 
-#ifndef INC_VMPC_PROC_H_
-#define INC_VMPC_PROC_H_
+#ifndef INC_PROCESSING_H_
+#define INC_PROCESSING_H_
 
 void OnPacketReceived(uint8_t recv);
 void Send();
 
 
-#endif /* INC_VMPC_PROC_H_ */
+#endif /* INC_PROCESSING_H_ */
