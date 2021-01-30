@@ -22,7 +22,7 @@
 #include "main.h"
 #include "usb_device.h"
 #include "peripheral/usb.h"
-#include "data/usb_data.h"
+
 #include "processing.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -99,7 +99,6 @@ int main(void)
   HAL_GPIO_WritePin(SPI1_WP_GPIO_Port, SPI1_WP_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(SPI1_RST_GPIO_Port, SPI1_RST_Pin, GPIO_PIN_SET);
   W25qxx_Init();
-  usb_cdc_system_init();
 
   /* USER CODE END 2 */
 
@@ -108,13 +107,9 @@ int main(void)
   while (1)
   {
 	  if(has_data()){
-		  uint32_t size = get_data_size();
-		  uint8_t* buffer = get_data_buffer();
 
-		  for(uint32_t i = 0; i < size; i++)
-		  {
-			ProcessByte(buffer[i]);
-		  }
+		  ProcessByte(get_data());
+
 		  increase_counter();
 	  }
 

@@ -4,8 +4,7 @@
  *  Created on: Jan 29, 2021
  *      Author: nov11
  */
-#include "data/usb_data.h"
-
+#include "main.h"
 
 #ifndef INC_PERIPHERAL_USB_H_
 #define INC_PERIPHERAL_USB_H_
@@ -17,14 +16,11 @@ extern uint8_t* newBuffer;
 
 // Check if has data to process
 uint8_t has_data();
-uint8_t* get_new_buffer();
-void usb_cdc_system_init();
 
 // Get data to process
 void increase_counter();
-uint8_t write_usb_data(uint8_t* buffer, uint16_t len);
+uint8_t write_usb_data(uint8_t* buffer, uint32_t length);
 
-uint32_t get_data_size();
-uint8_t* get_data_buffer();
+uint8_t get_data();
 
 #endif /* INC_PERIPHERAL_USB_H_ */
