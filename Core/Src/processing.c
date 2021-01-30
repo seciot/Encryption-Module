@@ -17,7 +17,7 @@
 #include "feature/cmd_0xF1.h"
 #include "feature/cmd_0xF2.h"
 
-void OnPacketReceived(uint8_t recv)
+void ProcessByte(uint8_t recv)
 {
 	if (currentCommand == CMD_DOE_NOT)
 		OnCommand0x00(recv);

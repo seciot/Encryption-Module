@@ -24,7 +24,7 @@ void OnCommand0x07(uint8_t recv){
 	// Loading length, max 2 bytes, MSB first
 	if (isChunkLenSet < 2) {
 		if (isChunkLenSet > 0) {
-			ChunkLength *= 256;
+			ChunkLength = ChunkLength << 8;
 		} else {
 			ChunkLength = 0;
 		}

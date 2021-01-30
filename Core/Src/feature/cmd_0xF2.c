@@ -41,11 +41,6 @@ void OnCommand0xF2(uint8_t recv)
 		if(cfgIndex_f2 == CFG_STREAM_CHUNK_SIZE){
 			SetStreamChunkSize(recv);
 		}
-		else if(cfgIndex_f2 == CFG_ENABLE_FAST_USB){
-			ENABLE_FAST_USB = recv;
-			cfgIndex_f2 = -1;
-			currentCommand = 0x0;
-		}
 	}
 }
 
