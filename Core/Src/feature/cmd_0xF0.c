@@ -28,6 +28,9 @@ uint8_t isSupported(uint8_t offset)
 	{
 		return 0b10001111;
 	}
+	if(offset == 2){
+		return 0b10000000;
+	}
 	else if(offset <= 9)
 	{
 		return 0x0;
