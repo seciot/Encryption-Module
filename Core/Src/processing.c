@@ -11,6 +11,7 @@
 #include "feature/cmd_0x05.h"
 #include "feature/cmd_0x06.h"
 #include "feature/cmd_0x07.h"
+#include "feature/cmd_0x10.h"
 #include "feature/cmd_0x50.h"
 #include "feature/cmd_0x51.h"
 #include "feature/cmd_0xF0.h"
@@ -29,6 +30,8 @@ void ProcessByte(uint8_t recv)
 		OnCommand0x06(recv);
 	else if (currentCommand == CMD_ENC_SEQ)
 		OnCommand0x07(recv);
+	else if (currentCommand == CMD_DMP_CRC)
+		OnCommand0x10(recv);
 	else if (currentCommand == CMD_DMP_DAT)
 		OnCommand0x50(recv);
 	else if (currentCommand == CMD_LOA_DAT)

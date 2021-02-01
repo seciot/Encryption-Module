@@ -11,6 +11,8 @@
 extern uint8_t P[256];
 extern uint8_t s;
 extern uint8_t n;
+extern uint32_t crc1;
+extern uint32_t crc2;
 
 void ResetP();
 void ResetVMPC();

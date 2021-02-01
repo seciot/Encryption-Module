@@ -4,6 +4,10 @@
 uint8_t P[256];
 uint8_t s, n;
 
+// CRC Checksums
+uint32_t crc1;
+uint32_t crc2;
+
 // Reset VMPC permutation table
 void ResetP(){
   for(int x = 0; x < 256; x++){
@@ -17,6 +21,8 @@ void ResetVMPC()
   s = 0;
   n = 0;
   ResetP();
+  crc1 = 0;
+  crc2 = 0;
 }
 
 // Initialize VMPC Key (internal method)
@@ -44,9 +50,11 @@ void VMPCInitKey(uint8_t Key[], uint8_t Vec[], uint8_t KeyLen, uint8_t VecLen)  
 // VMPC Encrypt data
 uint8_t VMPCEncrypt(uint8_t data)
 {
+	crc1 += data;
     s=P[(s + P[n]) & 255];
     data ^= P[(P[P[ s ]] + 1) & 255];
     uint8_t t = P[n];  P[n]=P[s];  P[s]=t;
     n++;
+    crc2 += data;
     return data;
 }

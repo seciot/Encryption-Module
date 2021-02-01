@@ -24,6 +24,9 @@
 // Command Encrypt Sequence
 #define CMD_ENC_SEQ 0x7
 
+// Command Dump CRC
+#define CMD_DMP_CRC 0x10
+
 // Command Dump Data
 #define CMD_DMP_DAT 0x50
 
