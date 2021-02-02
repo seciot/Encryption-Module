@@ -1,6 +1,12 @@
 ## Disclaimer
 Beware: this device is provided as-is and it's security has not been tested. It's not recommended to use this device to encrypt crucial-security files. Even if the USB impedance was matched closely to 90 Ohms to reduce radiation it is recommended to put it in metal (eg. aluminium) enclosure.  
-Beware2: USB packets can be sniffed and thus attacker can steal the password sent to device. The device IV is considered more crucial to device security rather than password.
+Beware2: USB packets can be sniffed and thus attacker can steal the password sent to device. The device IV is considered more crucial to device security rather than password.  
+**>> IT IS NOT RECOMMENDED TO USE THIS DEVICE AS SECURE ENCRYPTION TOOL! <<**
+
+## Known vulnerabilities
+- USB sniffing (password and data is sent in plaintext)
+- EM emission is not tested - it may be possible to capture data via emitted EM radiation - can be reduced by using metal chassis
+- Device integrity is not ensured - someone can alter it
 
 ## What is Encryption Module?
 Encryption Module is an USB peripheral for PC that allows you to encrypt data and files using its API.
